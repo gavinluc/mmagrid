@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PHP Response Example with jQuery</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+    .btn-success {
+        background-color: green;
+        color: white;
+    }
+    .btn-fail {
+        background-color: red;
+        color: white;
+    }
+</style>
+</head>
+<body>
+
+<input type="text" id="inputField" placeholder="Enter some data">
+<button id="button1">Button 1</button>
+<button id="button2">Button 2</button>
+
+<script>
+$(document).ready(function(){
+    // Function to handle button click
+    $("button").click(function() {
+        var button = $(this);
+        var buttonId = button.attr("id"); // Get the ID of the clicked button
+        var inputData = $("#inputField").val(); // Get the value of the input field
+
+        // Set button text to input data
+        button.text(inputData);
+
+        // Data to be sent to the PHP page
+        var sendData = {
+            buttonId: buttonId, // Pass the button ID
+            inputData: inputData // Pass the input field data
+        };
+
+        // jQuery AJAX request
+        $.ajax({
+            url: "your-php-page.php", // Path to your PHP file
+            method: "POST", // Use POST method to send data
+            data: sendData, // Send data to PHP page
+            success: function(response) {
+                // Change button color based on the response
+                if(response === 'truee') {
+                    button.addClass("btn-success").removeClass("btn-fail");
+                } else {
+                    button.addClass("btn-fail").removeClass("btn-success");
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Request failed: ' + status + ', ' + error);
+            }
+        });
+    });
+});
+</script>
+
+</body>
+</html>
