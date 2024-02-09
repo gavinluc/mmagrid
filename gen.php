@@ -34,7 +34,7 @@
         $sendSETT [$counter]= "INSERT into weight_class_queries VALUES ($sendSet[$counter]);";
         $counter = $counter +1;
     }
-    
+    //sdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
    // foreach($sendSETT as $ss){
         
     //    $aa=$conn->query($ss);
