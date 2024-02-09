@@ -3,26 +3,12 @@
 
     
     //Now we have two query tables
+
+
+
+
+
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /*
     $sql = "SELECT DISTINCT weight_class FROM `fightdata` where gender = \"M\";";
     $results = $conn->query($sql); 
     $resultset = array();
@@ -48,7 +34,7 @@
         $sendSETT [$counter]= "INSERT into weight_class_queries VALUES ($sendSet[$counter]);";
         $counter = $counter +1;
     }
-    */
+    
    // foreach($sendSETT as $ss){
         
     //    $aa=$conn->query($ss);
