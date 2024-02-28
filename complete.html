@@ -86,11 +86,44 @@
 			  src="https://code.jquery.com/jquery-3.6.0.min.js">
 </script>
 
- 
+
 <!--Make sure the form has the autocomplete function switched off:-->
 <form autocomplete="off" >
 <script>
+        $(function() {
+          lload("o1");
+          lload("o2");
+          lload("o3");
+          lload("a");
+          lload("b");
+          lload("c");
+      });
+
+      function lload(id) {
+      var header = $("#" + id);
+        if (header.length) {
+          console.log("Header with ID is loaded.");
+          //header.text(id); // Update the text here
+        } else {
+          console.error("Table header with ID " + id + " not found.");
+        }
+
+        var sendData = {id:id};
+        $.ajax({
+                url: "load.php",
+                method: "POST",
+                data: sendData, 
+                success: function(response){
+                  header.text(response);
+                },
+                error: function(xhr, status, error) {
+                console.error('Request failed: ' + status + ', ' + error);
+              }
+              });
+              
+     }
         $(document).ready(function(){
+          console.log ("called");
             $("button").click(function(){
               var button = $(this);
               
@@ -143,19 +176,19 @@
             <th>
 
             </th>
-            <th>
-                Fought Adesanya
+            <th id="o1"  >
+                
             </th>
-             <th>
-                Fought On UFC 200
+             <th id="o2">
+               
             </th>
-             <th>
-                3+ KO/TKO's
+             <th id="o3">
+               
             </th>
         </tr>   
         <tr>
-            <th>
-                Welterweight
+            <th id="a" >
+                
             </th>
             <th>
                 <button class = "button", id = "A1"> A1 </button>
@@ -168,8 +201,8 @@
             </th>
         </tr>
         <tr>
-            <th>
-                5+ UFC Wins
+            <th id="b" >
+                
             </th>
              <th>
                 <button class = "button", id = "B1"> B1 </button>
@@ -182,8 +215,8 @@
             </th>
         </tr>
         <tr>
-            <th>
-                Was Champion of Any Weightclass
+            <th id="c" >
+               
             </th>
              <th>
                 <button class = "button", id = "C1"> C1 </button>

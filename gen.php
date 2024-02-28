@@ -3,16 +3,16 @@
 
     
     //Now we have two query tables
+        //fuck you make three
 
-
-
+    
 
 
     
-    $sql = "SELECT DISTINCT weight_class FROM `fightdata` where gender = \"M\";";
+    $sql = "SELECT DISTINCT result FROM `fightdata`;";
     $results = $conn->query($sql); 
     $resultset = array();
-    while ($row = mysqli_fetch_array($results)) {
+    while ($row = mysqli_fetch_array($results)) { 
         $resultset []= $row;
     }
     $sendSet = array();
@@ -21,9 +21,9 @@
     $singlequote = "'";
     $Numba[0]='$Numba[0]';
     foreach ($resultset as $d){
-        echo $d[0];
-        echo "ss<br>";
-        $sendSet[$counter]= "'SELECT * FROM `fightdata` WHERE Weightclass = $quote$d[0]$quote AND (f_1 = $singlequote'$Numba[0]'$singlequote OR f_2 = $singlequote'$Numba[0]'$singlequote)'";
+        
+        echo "<br>";
+        $sendSet[$counter]= " $quote SELECT * FROM `fightdata` WHERE result = $singlequote$d[0]$singlequote $quote ";
         echo  $sendSet[$counter];
         $counter = $counter +1;
 
@@ -31,14 +31,17 @@
     $counter = 0;
     $sendSETT= array();
     foreach ($sendSet as $r){
-        $sendSETT [$counter]= "INSERT into weight_class_queries VALUES ($sendSet[$counter]);";
-        $counter = $counter +1;
+       $sendSETT [$counter]= "INSERT into q_fight_results VALUES ($sendSet[$counter]);";
+       echo $sendSETT [$counter];
+       echo "<br>";
+      $counter = $counter +1;
     }
-    //sdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-   // foreach($sendSETT as $ss){
+    //sdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagi
+  // foreach($sendSETT as $ss){
         
-    //    $aa=$conn->query($ss);
-  //  }
+   //   $aa=$conn->query($ss);
+   //   echo $aa;
+//}
             
 
 

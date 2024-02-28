@@ -1,83 +1,110 @@
 <?php
    include 'dbh.php';
-
+     
     $fighterFullName = $_POST['Name'];
     $Box = $_POST ['Box'];
-  
+    $day =3;
     // fighter id of name submitted
     $sql = "SELECT fighter_id FROM goodnamefighter WHERE full_name = '$fighterFullName';";
     $result = $conn->query($sql);
     $rows = mysqli_fetch_assoc($result);
     $Numba=array_values($rows);
-  
+
+    //getting the appropriate queries
+    
+    $sql = "SELECT * FROM q_daily WHERE day =$day";
+    $qRes=$conn ->query($sql);    
+    while ($row = mysqli_fetch_array($qRes)) {
+        $O1 = $row[1];
+        $O2 = $row[2];
+        $O3 = $row[3];
+        $a = $row[4];
+        $b = $row[5];
+        $c = $row[6];
+    }
     // looking for fight vs adesanya  1 condition
-    $sql2 = "SELECT * FROM `fightdata` WHERE f_1 = \"4089\" AND f_2 = '$Numba[0]' OR f_1 = '$Numba[0]' AND f_2 = \"4089\";";
-    $result2 = $conn->query($sql2);
-    $r2 = mysqli_fetch_assoc($result2);
-    if ($r2  !== NULL ){
-        $O1 = TRUE;
+    $querypull= "SELECT query FROM `q_all` WHERE ind = $O1";
+    $qRes= $conn ->query($querypull);
+    $row= mysqli_fetch_array($qRes);
+    $ConArr = $conn->query($row[0]);
+    $O1Set= array();
+    while ($row = mysqli_fetch_array($ConArr)) {
+        $O1Set[] = $row[0];
     }
+    
+    
     // looking for welterweight fight   A condition
-    $sql3 = "SELECT * FROM `fightdata` WHERE (f_1 = '$Numba[0]' OR f_2 = '$Numba[0]' ) AND weight_class = \"Welterweight\";";
-    $res3 = $conn->query($sql3); 
-    $r3 = mysqli_fetch_assoc($res3);
-    if ($r3  !== NULL ){
-        $A = TRUE;
+    $querypull= "SELECT query FROM `q_all` WHERE ind = $a";
+    $qRes= $conn ->query($querypull);
+    $row= mysqli_fetch_array($qRes);
+    $ConArr = $conn->query($row[0]);
+    $ASet= array();
+    while ($row = mysqli_fetch_array($ConArr)) {
+        $ASet[] = $row[0];
     }
+
     //Looking for ufc 200 2 CONDITION
-    $sql4 = "SELECT * FROM `fightdata` WHERE (f_1 = '$Numba[0]' OR f_2 = '$Numba[0]' ) AND  event_id = \"362\";";
-    $res4 = $conn->query($sql4); 
-    $r4 = mysqli_fetch_assoc($res4);
-    if ($r4  !== NULL ){
-        $O2 = TRUE;
+    $querypull= "SELECT query FROM `q_all` WHERE ind = $O2";
+    $qRes= $conn ->query($querypull);
+    $row= mysqli_fetch_array($qRes);
+    $ConArr = $conn->query($row[0]);
+    $O2Set= array();
+    while ($row = mysqli_fetch_array($ConArr)) {
+        $O2Set[] = $row[0];
     }
     //Looking for ko/tkos 3 CONDIDITON
-    $sql5 = "SELECT * FROM `fightdata` WHERE winner = '$Numba[0]' AND result = \"KO/TKO\";";
-    $res5 = $conn->query($sql5); 
-    if (mysqli_num_rows($res5)>2){
-        $O3 = TRUE;
+    $querypull= "SELECT query FROM `q_all` WHERE ind = $O3";
+    $qRes= $conn ->query($querypull);
+    $row= mysqli_fetch_array($qRes);
+    $ConArr = $conn->query($row[0]);
+    $O3Set= array();
+    while ($row = mysqli_fetch_array($ConArr)) {
+        $O3Set[] = $row[0];
     }
     //5+ Wins, B CONDITION
-    $sql6 = "SELECT * FROM `fightdata` WHERE winner = '$Numba[0]';";
-    $res6 = $conn->query($sql6); 
-    if (mysqli_num_rows($res6)>5){
-        $B = TRUE;
-    }else {
-        $B = TRUE;
+    $querypull= "SELECT query FROM `q_all` WHERE ind = $b";
+    $qRes= $conn ->query($querypull);
+    $row= mysqli_fetch_array($qRes);
+    $ConArr = $conn->query($row[0]);
+    $BSet= array();
+    while ($row = mysqli_fetch_array($ConArr)) {
+        $BSet[] = $row[0];
     }
     // Was champion C condition
-    $sql7 = "SELECT * FROM `fightdata` WHERE winner = '$Numba[0]' AND title_fight = \"T\" AND  num_rounds = \"5\";"; 
-    $res7 = $conn->query($sql7); 
-    $r7 = mysqli_fetch_assoc($res7);
-    if ($r7  !== NULL ){
-        $C = TRUE;
+    $querypull= "SELECT query FROM `q_all` WHERE ind = $c";
+    $qRes= $conn ->query($querypull);
+    $row= mysqli_fetch_array($qRes);
+    $ConArr = $conn->query($row[0]);
+    $CSet= array();
+    while ($row = mysqli_fetch_array($ConArr)) {
+        $CSet[] = $row[0];
     }
   //Verifier
-    if ($Box === "A1" and $A and $O1 ){
+    if ($Box === "A1" and in_array($Numba[0],array_intersect($O1Set,$ASet))){
         echo "true";
     }
-    elseif ($Box === "A2" and $A and $O2 ){
+    elseif ($Box === "A2" and in_array($Numba[0],array_intersect($O2Set,$ASet)) ){
         echo "true";
     }
-    elseif ($Box === "A3" and $A and $O3 ){
+    elseif ($Box === "A3" and in_array($Numba[0],array_intersect($O3Set,$ASet))){
         echo "true";
     }
-    elseif ($Box === "B1" and $B and $O1){
+    elseif ($Box === "B1" and in_array($Numba[0],array_intersect($O1Set,$BSet))){
         echo "true";
     }
-    elseif ($Box === "B2"and $B and $O2){
+    elseif ($Box === "B2"and in_array($Numba[0],array_intersect($O2Set,$BSet))){
         echo "true";
     }
-    elseif ($Box === "B3" and $B and $O3){
+    elseif ($Box === "B3" and in_array($Numba[0],array_intersect($O3Set,$BSet))){
         echo "true";
     }
-    elseif ($Box === "C1"and $C and $O1){
+    elseif ($Box === "C1"and in_array($Numba[0],array_intersect($O1Set,$CSet))){
         echo "true";
     }
-    elseif ($Box === "C2"and $C and $O2){
+    elseif ($Box === "C2"and in_array($Numba[0],array_intersect($O2Set,$CSet))){
         echo "true";
     }
-    elseif ($Box === "C3"and $C and $O3){
+    elseif ($Box === "C3"and in_array($Numba[0],array_intersect($O3Set,$CSet))){
         echo "true";
     }
 

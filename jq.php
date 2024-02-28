@@ -3,7 +3,7 @@
 ?>
 
 
-<!DOCTYPE html>aa
+<!DOCTYPE html>
 
 <html>
     <head> 
